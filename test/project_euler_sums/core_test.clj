@@ -45,3 +45,12 @@
 (expect/expect true (prime? 7))
 (expect/expect false (prime? 9))
 (expect/expect 13 (prime-no-index 6))
+
+;; Problem 8 Test
+
+;; Problem 9 Test Cases
+
+(expect/expect true (triplet? 3 4 5))
+(expect/expect false (triplet? 6 7 8))
+
+(expect/expect 12 (special-triplet 1 2 3))

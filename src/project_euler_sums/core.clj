@@ -8,9 +8,16 @@
 
 ;; Problem 1
 
-(defn sum-of-multi [inp]
+(defn sum-of-multi
   "Returns the sum of al numbers divisible by 3 & 5"
-  (reduce + (filter (fn[x] (if(or (= 0 (mod x 3)) (= 0 (mod x 5))) x)) (range 1 inp))))
+  [inp]
+  (reduce +
+          (filter (fn[x]
+                    (if
+                        (or (= 0 (mod x 3))
+                            (= 0 (mod x 5)))
+                      x))
+                  (range 1 inp))))
 
 ;; Problem 2
 
@@ -26,10 +33,14 @@
           (filter (fn [x] (if (<= x 4000000)
                             x)) (filter even? (get-fibo-num)))))
 
-(defn sum-even-fibo []
+(defn sum-even-fibo
   "Returns sum of even valued fibonacci series"
+  []
   (reduce +
-          (take-while (fn [x] (if (<= x 4000000)x)) (filter even? (get-fibo-num)))))
+          (take-while (fn [x]
+                        (if (<= x 4000000)
+                          x))
+                      (filter even? (get-fibo-num)))))
 
 ;; Problem 3
 
@@ -40,8 +51,7 @@
 
 (defn largest-prime-factor [inp]
   "Returns the largest prime factor of a number"
-  (first (reverse
-          (filter (fn [x]
+  (first (reverse (filter (fn [x]
                     (if (= 1 (count (get-factors x)))
                       x))
                   (get-factors inp)))))
@@ -50,7 +60,8 @@
 
 ;;Efficient one
 
-(defn helper-large [inp fact]
+(defn helper-large
+  [inp fact]
   (loop [num inp
          div 2
          fact []]
@@ -65,17 +76,19 @@
 
 ;; Problem 4
 
-(defn palindrome? [inp]
+(defn palindrome?
   "Returns true if number is palindrome else returns false"
+  [inp]
   (if (= (str inp) (clojure.string/reverse (str inp)))
     true
     false))
 
 (defn helper-palin
+  "Returns the list of palindrones between x and 999-1"
   ([x] (helper-palin x []))
 
   ([x out]
-   "Returns the list of palindrones between x and 999-1"
+
    (loop [y 999
           out []]
      (if (= y 1)
@@ -84,26 +97,46 @@
          (conj out (* x y))
          (recur (dec y) out))))))
 
-(defn largest-palin []
+(defn largest-palin
   "Returns the largest 3-digit palindrone"
+  []
   (loop [x 999
          out []]
     (if (= x 1)
       (last  (sort  out))
       (recur (dec x) (conj out (helper-palin x))))))
 
+;;Updated Solution using Loop
+
+(defn largest-palin-for []
+  (last (sort (for [x (range 100 999)
+                    y (range 100 999)
+                    :when (palindrome? (* x y))]
+                (* x y)))))
 ;; Problem 5
 
-(defn isdiv? [inp]
+(defn isdiv?
   "Returns true if input divisble by 1-10 else returns nil"
+  [inp]
   (loop [i 20
-         flag true]
-    (when flag
-      (if (> i 0)
-        (if (= 0 (mod inp i))
-          (recur (dec i) true)
-          (recur i false))
-        flag))))
+            flag true]
+       (when flag
+         (if (> i 0)
+           (if (= 0 (mod inp i))
+             (recur (dec i) true)
+             (recur i false))
+           flag))))
+
+(defn new-isdiv?
+  "Returns true if input is divisible by 1-10 else returns false"
+  [inp]
+  (if (= (range 1 11)
+         (filter (fn [x] (if (zero? (mod inp x))
+                           true))
+               (range 1 11)))
+    true
+    false))
+
 
 (defn smallest-div-num []
   (second (filter isdiv? (range))))
@@ -137,3 +170,23 @@
     (if (= i no)
       (convert-to-parts no inp out)
       (recur (inc i) (rest inp) (conj out (first inp))))))
+
+
+;; Problem 9
+
+(defn triplet? [a b c]
+  (if (= (Math/pow c 2) (+ (Math/pow a 2) (Math/pow b 2)))
+    true
+    false))
+
+#_(defn special-triplet
+  ([] (special-triplet 1 1 2))
+  ([a b c]
+   (if (< a b)
+     (if (< b c)
+       (if (= 13 (+ a b c))
+         (if (triplet? a b c)
+           (* a b c)
+           (recur a b (inc c))))
+       (recur a (inc b) c))
+     (recur (inc a) b c))))
