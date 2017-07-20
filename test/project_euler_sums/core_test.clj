@@ -48,9 +48,9 @@
 
 ;; Problem 8 Test
 
-(expect/expect '(1 2 3) (multiply-parts [[1 1 2] [1 1 3] [1 1 4]]))
-(expect/expect [1 2 3] (split-digits [123]))
-#_(expect/expect [[1 2 3 4] [5 6 7 8]] (split-parts 4))qq
+#_(expect/expect '(1 2 3) (multiply-parts [[1 1 2] [1 1 3] [1 1 4]]))
+#_(expect/expect [1 2 3] (split-digits [123]))
+#_(expect/expect [[1 2 3 4] [5 6 7 8]] (split-parts 4))
 
 ;; Problem 9 Test Cases
 
@@ -65,6 +65,11 @@
 
 ;; Problem 11 Test Cases
 
+(expect/expect 1651104 (down 0 0))
+(expect/expect 34144 (right 0 0))
+(expect/expect 279496 (diagonal-right 0 0))
+(expect/expect 8 (diagonal-left 0 0 ))
+(expect/expect 70600674 (largest-prod-grid grid))
 
 ;; Problem 12 Test Cases
 
