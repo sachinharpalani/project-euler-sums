@@ -48,9 +48,25 @@
 
 ;; Problem 8 Test
 
+(expect/expect '(1 2 3) (multiply-parts [[1 1 2] [1 1 3] [1 1 4]]))
+(expect/expect [1 2 3] (split-digits [123]))
+#_(expect/expect [[1 2 3 4] [5 6 7 8]] (split-parts 4))qq
+
 ;; Problem 9 Test Cases
 
-(expect/expect true (triplet? 3 4 5))
-(expect/expect false (triplet? 6 7 8))
+#_(expect/expect true (triplet? 3 4 5))
+#_(expect/expect false (triplet? 6 7 8))
 
-(expect/expect 12 (special-triplet 1 2 3))
+(expect/expect 31875000 (special-triplet 1000))
+
+;; Problem 10 Test Cases
+
+(expect/expect 17 (prime-sum 10))
+
+;; Problem 11 Test Cases
+
+
+;; Problem 12 Test Cases
+
+(expect/expect '(28) (highly-div-tri 5))
+(expect/expect '(73920) (highly-div-tri 100))

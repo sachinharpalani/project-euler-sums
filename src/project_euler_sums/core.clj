@@ -163,30 +163,102 @@
 
 ;; Problem 8
 
-#_(defn convert-to-parts [no inp o]
-  (loop [i 1
-         n inp
-         out o]
-    (if (= i no)
-      (convert-to-parts no inp out)
-      (recur (inc i) (rest inp) (conj out (first inp))))))
+(def num 73167176531330624919225119674426574742355349194934969835203127745063262395783180169848018694788518438586156078911294949545950173795833195285320880551112540698747158523863050715693290963295227443043557668966489504452445231617318564030987111217223831136222989342338030813533627661428280644448664523874930358907296290491560440772390713810515859307960866701724271218839987979087922749219016997208880937766572733300105336788122023542180975125454059475224352584907711670556013604839586446706324415722155397536978179778461740649551492908625693219784686224828397224137565705605749026140797296865241453510047482166370484403199890008895243450658541227588666881164271714799244429282308634656748139191231628245869178664583591245665294765456828489128831426076900422421902267105562632111110937054421750694165896040807198403850962455444362981230987879927244284909188845801561660979191338754992005240636899125607176060588611646710940507754100225698315520005593572972571636269561882670428252483600823257530420752963450)
+
+;; SOLUTION 1
+(defn multiply-parts
+  ([inp] (multiply-parts inp []))
+  ([inp out]
+   (if (empty? inp)
+     out
+     (recur (rest inp) (conj out (reduce * (first inp)))))))
+
+(defn split-digits [num]
+  (map (fn [^Character c]
+         (Character/digit c 10))
+       (str num)))
+(def m-multiply-parts (memoize multiply-parts))
+
+(defn max-product
+  [inp]
+  (apply max (m-multiply-parts inp)))
+
+(defn split-parts
+  [lim]
+  (loop [in (split-digits num)
+         out []]
+    (if (< (count in) lim)
+      out
+      (recur (rest in) (conj out (max-product (partition lim in)))))))
+
+(defn greatest-product
+  [lim]
+  (apply max (split-parts lim)))
+
+;; SOLUTION 2
+
+(defn new-split
+  [lim]
+  (loop [in (split-digits num)
+         out 0]
+    (if(< (count in) lim)
+      out
+      (if (> out (reduce * (take lim in)))
+        (recur (rest in) out)
+        (recur (rest in) (reduce * (take lim in)))))))
 
 
 ;; Problem 9
 
-(defn triplet? [a b c]
-  (if (= (Math/pow c 2) (+ (Math/pow a 2) (Math/pow b 2)))
-    true
-    false))
+(defn square-of
+  [inp]
+  (long (Math/pow inp 2)))
+(defn special-triplet
+  [sum]
+  (first  (for [a (range 1 (/ sum 2))
+                b (range 1 (/ sum 2))
+                :let [c (- sum a b)]
+                :when (= (square-of c) (+  (square-of a) (square-of b)))]
+            (* a b c))))
 
-#_(defn special-triplet
-  ([] (special-triplet 1 1 2))
-  ([a b c]
-   (if (< a b)
-     (if (< b c)
-       (if (= 13 (+ a b c))
-         (if (triplet? a b c)
-           (* a b c)
-           (recur a b (inc c))))
-       (recur a (inc b) c))
-     (recur (inc a) b c))))
+;; Problem 10
+
+(defn prime-sum
+  [inp]
+  (reduce + (filter prime? (range 2 inp))))
+
+;; Problem 11
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+;; Problem 12
+
+(defn get-tri-nums
+  []
+  (map (fn [x] (reduce + (range 1 (inc x)))) (range)))
+
+(defn highly-div-tri
+  [inp]
+  (take 1 (filter (fn [x]
+                    (if (> (count (get-factors x))
+                           (dec inp))
+                      x))
+                  (get-tri-nums))))
+q
